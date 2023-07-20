@@ -8,7 +8,7 @@ final_xxx.npy file is the data for three downstream task NPxxY, CWxG and PxxG.
 
 edit the config.yaml file to run for different parameters.
 
-'model.py', 'train.py', 'utils.py', 'dataset' contains the models and functions that are used in 'two_position_main.py'.
+'model.py', 'train.py', 'utils.py', 'dataset.py' contains the models and functions that are used in 'two_position_main.py'.
 
 'NPXXY_correlation.ipynb', 'PXXG_correlation.ipynb', 'CWXP_correlation.ipynb' has the complete list of correlation data of GPCRs.
 
