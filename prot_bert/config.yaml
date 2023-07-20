@@ -1,0 +1,188 @@
+project_name: proteins_CWxP # project name for logging, and saving checkpoints
+batch_size: 32 # batch size for training
+lr: 0.0001 # learning rate 
+epochs: 100 # number of epochs to train 
+use_amp: False # use automatic mixed precision 
+vocabulary_size: 23 # vocabulary size for embedding (for custom tokenization)
+# max_len: 82 
+feature_dim: 1024 # feature dimension for embedding
+# token_ids_filename: token_ids.json
+step_size: 1 # step size for scheduler
+use_scheduler: True # use scheduler
+
+virus_max_len: 195 # max length of virus sequence for padding
+vl_max_len: 122 # max length of light chain sequence for padding
+vhh_max_len: 139 # max length of heavy chain sequence for padding 
+cdrh3_max_len: 32 # max length of cdrh3 sequence for padding
+cdrl3_max_len: 17 # max length of cdrl3 sequence for padding
+max_total_len_vh: 335 # max length of heavy chain sequence plus virus sequence for padding
+max_total_len_vl: 318 # max length of light chain sequence plus virus sequence for padding
+max_len_cdrh3_plus_vl: 155 # max length of cdrh3 sequence plus light chain sequence for padding
+max_len_cdrl3_plus_vh: 156 # max length of cdrl3 sequence plus heavy chain sequence for padding
+use_virus: True
+
+ignore_label: 0 # ignore label for loss calculation
+label_smoothing: 0.1 # label smoothing for loss calculation
+use_heavy: True # use heavy chain sequence
+mask_token: '*' # my mask token in input sequence, replace it with [MASK] token for BERT
+pad_token: '_' # my pad token in input sequence, replace it with [PAD] token for BERT
+sep_token: ',' # my sep token in input sequence, replace it with [SEP] token for BERT
+only_train_on_masked: True # only train on masked tokens
+measure_masked_accuracy: False # measure accuracy on masked tokens
+filename: './data/heavy_unique_masked_full.csv' # filename for dataset
+topk: 5 # topk accuracy
+run_inference: False # run inference on test dataset 
+model_pth: ./bert_antibody_and_heavy_model.pt # model path for inference or resume training
+resume: False # resume training
+
+# is_transformer: True 
+TransformerEncoder: # transformer encoder parameters
+  num_layers: 2
+  num_heads: 4
+  d_model: 512
+  dim_feedforward: 1024
+
+TransformerDecoder: # transformer decoder parameters
+  num_layers: 4
+  num_heads: 1
+  d_model: 512
+  dim_feedforward: 1024
+
+Embedding: # embedding parameters for position and token embedding
+  max_pos_len: 196
+  vocabulary_size: 23
+  dropout: 0.1
+  feature_dim: 512
+
+FeedForward: # feed forward parameters for final classification
+  input_dims: 1024
+  hidden_dims: 256
+  dropout: 0.5
+  num_classes: 30
+
+Bert: # bert parameters
+  mask_token: '[MASK]'
+  pad_token: '[PAD]'
+  sep_token: '[SEP]'
+  sep_token_id: 3 # token id for [SEP] token
+  virus_max_len: 197 
+  vl_max_len: 124
+  vhh_max_len: 141
+  max_total_len_vh: 337
+  max_total_len_vl: 320
+  max_total_len_vh_and_vl: 459 # including 2 [SEP] and 1 [CLS]
+  pretrained_model_name: Rostlab/prot_bert
+  num_classes: 30
+  start_layer: 29
+  end_layer: 30
+
+AutoRegressive:
+  max_len_cdrh3: 32
+  sep_token: 3
+  pad_token: 0
+  mask_token: 4
+  cls_token: 2
+
+
+
+Classification: # classification parameters
+  use_torch_transformer: True
+  max_len: 638 # including 2 [SEP]s
+  task: 4 # 0: binds_to, 1: neutralising, 2: not_neutralising
+  model_pth: ./bert_antibody_and_heavy_model.pt
+  class_num: 2
+  batch_size: 16
+  d_model: 512
+  n_heads: 8
+  n_layers: 8
+  dim_feedforward: 1024
+  labels_dict:
+    0: cov2_wt
+    1: cov2_omicron
+    2: cov1
+    3: cov2_beta
+    4: cov2_delta
+    5: cov2_gamma
+    6: cov2_alpha
+    7: cov2_epsilon
+    8: cov2_lambda
+    9: cov2_kappa
+    10: cov2_mu
+
+  Binds_to: # binds to parameters
+    filename: ./data/binds_to_classification_binary.npy
+    max_len: 442 # including [SEP]
+    bert_max_len: 444 # including [SEP] and [CLS] token
+    
+
+  Neutralising_classification:  # neutralising parameters
+    filename: ./data/Neutralising_classification.npy
+    max_len: 442 # including [SEP]
+    bert_max_len: 444 # including [SEP] and [CLS] token
+
+  Not_Neutralising_classification: # not neutralising parameters
+    filename: ./data/Not_Neutralising_classification.npy
+    max_len: 451 # including [SEP]
+    bert_max_len: 453 # including [SEP] and [CLS] token
+  
+  Binds_to_classification: # binds to parameters
+    filename: ./data/binding_virus_antibody_new.npy
+    use_cdrh3: False
+    max_atom_len: 1814
+    max_cdrh3_atom_len: 269
+    max_virus_atom_len: 1564
+
+  Neutralising: # neutralising parameters
+    filename: ./data/Neutralising_classification_virus.npy
+    max_atom_len: 1814
+    max_cdrh3_atom_len: 269
+    max_virus_atom_len: 1564
+    # max_len: 442 # including [SEP]
+    # bert_max_len: 444 # including [SEP] and [CLS] token
+
+ClassificationTwoPosition: # classification parameters for two positions prediction
+  use_bert: True
+  filename: drive/MyDrive/PRotBert/data/final_NPxxY.npy
+  alanine: drive/MyDrive/PRotBert/alanine(b2)/b2(0).npy
+  save_path: ./proteins_NPxxY.pt
+  lr: 0.0001
+  ignore_idx: 0
+  epochs: 30
+  batch_size: 4
+  max_len: 370 #
+  bert_max_len: 372 #
+  mask_token: 'J'
+  bert_mask_token: '[MASK]'
+  #req_pre_string: 'P'
+  #distance_mask_token: 2 #
+  #no_mask_token: 2 #
+  perform_inference: False
+  plot_num: 10
+  Embedding:
+    max_len: 371 #
+    bert_max_len: 373 #
+    vocabulary_size: 30
+    feature_dim: 1024
+  TransformerEncoder:
+    num_layers: 8
+    num_heads: 8
+    d_model: 1024
+    dim_feedforward: 1024
+    dropout: 0.25
+  FeedForward:
+    input_dims: 1024
+    hidden_dims: 256
+    dropout: 0.5
+    num_classes: 30
+  Bert:
+    pretrained_model_name: 'Rostlab/prot_bert'
+    freeze_layers: 23
+    layer_no_to_view: 29
+    head_no_to_view: 0
+
+
+  Classifier:
+    input_dims: 768
+    hidden_dims: 256
+    dropout: 0.5
+    num_classes: 25
