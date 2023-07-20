@@ -10,6 +10,8 @@ edit the config.yaml file to run for different parameters.
 
 'model.py', 'train.py', 'utils.py', 'dataset.py' contains the models and functions that are used in 'two_position_main.py'.
 
+In INTERPRETATION, 
+
 'NPXXY_correlation.ipynb', 'PXXG_correlation.ipynb', 'CWXP_correlation.ipynb' has the complete list of correlation data of GPCRs.
 
 'Heatmap.ipynb', 't_SNE.ipynb' are the codes for visualizing and interpreting the GPCR-Bert.
