@@ -11,6 +11,6 @@ final_xxx_class.npy files in the data folder are downstream tasks data.
 
 In INTERPRETATION, 
 
-'NPXXY_correlation.ipynb', 'PXXG_correlation.ipynb', 'CWXP_correlation.ipynb' has the complete list of correlation data of GPCRs.
+'npxxy_5cor.ipynb', 'cwxp_5cor.ipynb', 'edry_5cor.ipynb' has the complete list of correlation data of GPCRs.
 
 'Heatmap.ipynb', 't_SNE.ipynb' are the codes for visualizing and interpreting the GPCR-Bert.
