@@ -2,13 +2,12 @@
 
 This repository contains the necessary codes for running the GPCR-BERT.
 
-final_xxx.npy file is the data for three downstream task NPxxY, CWxG and PxxG.
+final_xxx_class.npy files in the data folder are downstream tasks data.
 
-'two_position_main.py' is the main code for running GPCR-BERT.
+'GPCR-BERT.ipynb' is the main code for running GPCR-BERT.
 
-edit the config.yaml file to run for different parameters.
+'BERT-GPCR.ipynb', 'GPCR-SVM.ipynb' are code for comparison studies
 
-'model.py', 'train.py', 'utils.py', 'dataset.py' contains the models and functions that are used in 'two_position_main.py'.
 
 In INTERPRETATION, 
 
